@@ -7,7 +7,7 @@ $KCODE = 'u'
 
 arg = ARGV.first
 unless arg =~ /\d+-\d+/
-  STDERR.puts "ruby crawl.rb 1-1000"
+  STDERR.puts "ruby crawl.rb 10000-10100"
   exit 1
 end
 first, last = arg.scan(/(\d+)-(\d+)/).first.map{|i|i.to_i}
@@ -24,7 +24,7 @@ end
 error_count = 0
 for id in first..last
   puts "--- #{id}"
-  if error_count > 10
+  if error_count > @conf['error_limit']
     STDERR.puts "error_count : #{error_count}"
     exit 1
   end
@@ -34,17 +34,17 @@ for id in first..last
   rescue Pixiv::Error => e
     STDERR.puts e
     @db['imgs'].insert({:illust_id => id, :error => e.to_s, :stored_at => Time.now.to_i})
-    sleep @conf['sleep']
+    sleep @conf['interval']
     next
   rescue Timeout::Error => e
     STDERR.puts e
     error_count += 1
-    sleep @conf['sleep']
+    sleep @conf['interval']
     next
   rescue => e
     STDERR.puts e
     error_count += 1
-    sleep @conf['sleep']
+    sleep @conf['interval']
     next
   end
 
@@ -60,12 +60,12 @@ for id in first..last
     rescue Timeout::Error => e
       STDERR.puts e
       error_count += 1
-      sleep @conf['sleep']
+      sleep @conf['interval']
       next
     rescue => e
       STDERR.puts e
       error_count += 1
-      sleep @conf['sleep']
+      sleep @conf['interval']
       next
     end
     unless File::stat("#{@datadir}/#{filename}").size > 0
@@ -78,7 +78,7 @@ for id in first..last
       puts "--- #{id} stored!"
       error_count = 0
     end
-    sleep @conf['sleep']
+    sleep @conf['interval']
   end
 
 end

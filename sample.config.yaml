@@ -7,4 +7,5 @@ mongo_dbname : 'pixiv'
 pixiv_user : 'your-name'
 pixiv_pass : 'your-passwd'
 
-sleep : 10
+interval : 30
+error_limit : 10
