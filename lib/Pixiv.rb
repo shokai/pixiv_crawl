@@ -123,7 +123,11 @@ class Pixiv
     tags = doc.xpath('//span[@id="tags"]//a').map{|a|
       a.content
     }.delete_if{|tag| tag.to_s.size < 1 } rescue tags = []
+    begin
     works_data = doc.xpath('//div[@class="works_data"]/p').first.text
+    rescue
+      raise Error.new 'illust get error'
+    end
     date = works_data.scan(/(\d+年\d+月\d+日 \d+:\d+)/).first.first
     date = Time.gm(date.scan(/(\d+)年/).first.first.to_i,
                    date.scan(/(\d+)月/).first.first.to_i,
@@ -139,7 +143,11 @@ class Pixiv
       }
     end
 
-    score = doc.xpath('//div[@id="unit"]/h4').text.scan(/閲覧数：(\d+)　評価回数：(\d+)　総合点：(\d+)/).first
+    begin
+      score = doc.xpath('//div[@id="unit"]/h4').text.scan(/閲覧数：(\d+)　評価回数：(\d+)　総合点：(\d+)/).first
+    rescue
+      raise Error.new 'illust get error'
+    end
     score = {
       :pageview => score[0].to_i,
       :rated => score[1].to_i,
