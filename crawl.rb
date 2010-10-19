@@ -34,17 +34,17 @@ for id in first..last
   rescue Pixiv::Error => e
     STDERR.puts e
     @db['imgs'].insert({:illust_id => id, :error => e.to_s, :stored_at => Time.now.to_i})
-    sleep 5
+    sleep @conf['sleep']
     next
   rescue Timeout::Error => e
     STDERR.puts e
     error_count += 1
-    sleep 5
+    sleep @conf['sleep']
     next
   rescue => e
     STDERR.puts e
     error_count += 1
-    sleep 5
+    sleep @conf['sleep']
     next
   end
 
@@ -60,12 +60,12 @@ for id in first..last
     rescue Timeout::Error => e
       STDERR.puts e
       error_count += 1
-      sleep 5
+      sleep @conf['sleep']
       next
     rescue => e
       STDERR.puts e
       error_count += 1
-      sleep 5
+      sleep @conf['sleep']
       next
     end
     if File::stat("#{@datadir}/#{filename}").size > 0
@@ -77,7 +77,7 @@ for id in first..last
     else
       error_count += 1
     end
-    sleep 5
+    sleep @conf['sleep']
   end
 
 end
