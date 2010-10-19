@@ -1,0 +1,8 @@
+# mongodb config
+mongo_host : 'localhost'
+mongo_port : 27017
+mongo_dbname : 'pixiv'
+
+# pixiv config
+pixiv_user : 'your-name'
+pixiv_pass : 'your-passwd'
