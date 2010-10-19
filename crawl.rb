@@ -24,7 +24,7 @@ end
 error_count = 0
 for id in first..last
   puts "--- #{id}"
-  if error_count > 5
+  if error_count > 10
     STDERR.puts "error_count : #{error_count}"
     exit 1
   end
@@ -68,14 +68,15 @@ for id in first..last
       sleep @conf['sleep']
       next
     end
-    if File::stat("#{@datadir}/#{filename}").size > 0
+    unless File::stat("#{@datadir}/#{filename}").size > 0
+      error_count += 1
+    else
       illust[:filename] = filename
       illust[:stored_at] = Time.now.to_i
       @db['imgs'].insert illust
       pp illust
       puts "--- #{id} stored!"
-    else
-      error_count += 1
+      error_count = 0
     end
     sleep @conf['sleep']
   end
