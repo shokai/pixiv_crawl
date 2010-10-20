@@ -10,9 +10,9 @@ class Pixiv
   class Error < Exception
   end
 
-  def initialize(user, pass)
+  def initialize(user, pass, agent_name=nil)
     @agent = Mechanize.new
-    @agent.user_agent_alias = 'Windows IE 7'
+    @agent.user_agent = agent_name if agent_name
     page = @agent.get('http://www.pixiv.net/')
     login_form = nil
     for form in page.forms do

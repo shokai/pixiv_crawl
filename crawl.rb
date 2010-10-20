@@ -14,7 +14,7 @@ first, last = arg.scan(/(\d+)-(\d+)/).first.map{|i|i.to_i}
 puts "crawl #{first} ... #{last}"
 
 begin
-  pix = Pixiv.new(@conf['pixiv_user'], @conf['pixiv_pass'])
+  pix = Pixiv.new(@conf['pixiv_user'], @conf['pixiv_pass'], @conf['agent_name'])
   puts 'pixiv login'
 rescue
   STDERR.puts 'pixiv login error'

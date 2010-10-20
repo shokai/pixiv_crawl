@@ -1,3 +1,6 @@
+# crawler config
+agent_name : 'your-agent-name'
+
 # mongodb config
 mongo_host : 'localhost'
 mongo_port : 27017
